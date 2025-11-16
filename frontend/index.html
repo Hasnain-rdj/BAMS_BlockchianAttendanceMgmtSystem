@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMS - Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🔗 BAMS</div>
+            <ul class="nav-menu">
+                <li><a href="/" class="active">Dashboard</a></li>
+                <li><a href="/departments">Departments</a></li>
+                <li><a href="/classes">Classes</a></li>
+                <li><a href="/students">Students</a></li>
+                <li><a href="/attendance">Attendance</a></li>
+                <li><a href="/blockchain">Blockchain</a></li>
+                <li><a href="/validation">Validation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>📊 Dashboard</h1>
+            <p>Blockchain-Based Attendance Management System</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🏢</div>
+                <div class="stat-info">
+                    <h3 id="totalDepartments">0</h3>
+                    <p>Departments</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-info">
+                    <h3 id="totalClasses">0</h3>
+                    <p>Classes</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">👨‍🎓</div>
+                <div class="stat-info">
+                    <h3 id="totalStudents">0</h3>
+                    <p>Students</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⛓️</div>
+                <div class="stat-info">
+                    <h3 id="totalBlocks">0</h3>
+                    <p>Total Blocks</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h2>🔐 Blockchain Status</h2>
+                <div class="status-info">
+                    <div class="status-item">
+                        <span>Chain Validity:</span>
+                        <span id="chainValidity" class="badge">Checking...</span>
+                    </div>
+                    <div class="status-item">
+                        <span>Department Blocks:</span>
+                        <span id="deptBlocks">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span>Difficulty:</span>
+                        <span>4 (0000)</span>
+                    </div>
+                    <div class="status-item">
+                        <span>Mining Algorithm:</span>
+                        <span>SHA-256 PoW</span>
+                    </div>
+                </div>
+                <button onclick="window.location.href='/validation'" class="btn btn-primary">
+                    View Validation Details
+                </button>
+            </div>
+
+            <div class="card">
+                <h2>🎯 Quick Actions</h2>
+                <div class="quick-actions">
+                    <button onclick="window.location.href='/departments'" class="action-btn">
+                        <span class="action-icon">➕</span>
+                        <span>Add Department</span>
+                    </button>
+                    <button onclick="window.location.href='/classes'" class="action-btn">
+                        <span class="action-icon">➕</span>
+                        <span>Add Class</span>
+                    </button>
+                    <button onclick="window.location.href='/students'" class="action-btn">
+                        <span class="action-icon">➕</span>
+                        <span>Add Student</span>
+                    </button>
+                    <button onclick="window.location.href='/attendance'" class="action-btn">
+                        <span class="action-icon">✓</span>
+                        <span>Mark Attendance</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📖 System Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>System Architecture:</strong>
+                    <p>3-Layer Hierarchical Blockchain (Department → Class → Student)</p>
+                </div>
+                <div class="info-item">
+                    <strong>Consensus Mechanism:</strong>
+                    <p>Proof of Work (PoW) with difficulty 4</p>
+                </div>
+                <div class="info-item">
+                    <strong>Hash Algorithm:</strong>
+                    <p>SHA-256</p>
+                </div>
+                <div class="info-item">
+                    <strong>Data Integrity:</strong>
+                    <p>Append-only blockchain ensures immutability</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Blockchain-Based Attendance Management System | Built with Node.js & Custom Blockchain</p>
+    </footer>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

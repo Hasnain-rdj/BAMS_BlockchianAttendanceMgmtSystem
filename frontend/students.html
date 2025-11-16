@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMS - Students</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🔗 BAMS</div>
+            <ul class="nav-menu">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/departments">Departments</a></li>
+                <li><a href="/classes">Classes</a></li>
+                <li><a href="/students" class="active">Students</a></li>
+                <li><a href="/attendance">Attendance</a></li>
+                <li><a href="/blockchain">Blockchain</a></li>
+                <li><a href="/validation">Validation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>👨‍🎓 Student Management</h1>
+            <p>Add, update, and manage students</p>
+        </header>
+
+        <div class="grid-2">
+            <!-- Add Student Form -->
+            <div class="card">
+                <h2>➕ Add Student</h2>
+                <form id="addStudentForm">
+                    <div class="form-group">
+                        <label for="studentDept">Department</label>
+                        <select id="studentDept" name="departmentId" required>
+                            <option value="">-- Select Department --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentClass">Class</label>
+                        <select id="studentClass" name="classId" required>
+                            <option value="">-- Select Class --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentName">Student Name</label>
+                        <input type="text" id="studentName" name="name" required 
+                               placeholder="e.g., Alice Johnson">
+                    </div>
+                    <div class="form-group">
+                        <label for="studentRoll">Roll Number</label>
+                        <input type="text" id="studentRoll" name="rollNumber" required 
+                               placeholder="e.g., CS2025001">
+                    </div>
+                    <div class="form-group">
+                        <label for="studentEmail">Email</label>
+                        <input type="email" id="studentEmail" name="email" required 
+                               placeholder="e.g., alice@example.com">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Student</button>
+                </form>
+            </div>
+
+            <!-- Update Student Form -->
+            <div class="card">
+                <h2>✏️ Update Student</h2>
+                <form id="updateStudentForm">
+                    <div class="form-group">
+                        <label for="updateStudentId">Select Student</label>
+                        <select id="updateStudentId" name="id" required>
+                            <option value="">-- Select Student --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStudentName">New Name (optional)</label>
+                        <input type="text" id="updateStudentName" name="name" 
+                               placeholder="Leave empty to keep current">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStudentRoll">New Roll Number (optional)</label>
+                        <input type="text" id="updateStudentRoll" name="rollNumber" 
+                               placeholder="Leave empty to keep current">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStudentEmail">New Email (optional)</label>
+                        <input type="email" id="updateStudentEmail" name="email" 
+                               placeholder="Leave empty to keep current">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Update Student</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="card">
+            <div class="filter-bar">
+                <input type="text" id="searchStudent" placeholder="🔍 Search by name or roll number..." aria-label="Search students">
+                <select id="filterClass" aria-label="Filter by class">
+                    <option value="">All Classes</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Students List -->
+        <div class="card">
+            <h2>📋 All Students</h2>
+            <div id="loadingStudents" class="loading">Loading students...</div>
+            <div id="studentsList"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Blockchain-Based Attendance Management System</p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/students.js"></script>
+</body>
+</html>

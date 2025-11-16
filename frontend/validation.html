@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMS - Blockchain Validation</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🔗 BAMS</div>
+            <ul class="nav-menu">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/departments">Departments</a></li>
+                <li><a href="/classes">Classes</a></li>
+                <li><a href="/students">Students</a></li>
+                <li><a href="/attendance">Attendance</a></li>
+                <li><a href="/blockchain">Blockchain</a></li>
+                <li><a href="/validation" class="active">Validation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>🔐 Blockchain Validation</h1>
+            <p>Multi-layer blockchain integrity verification</p>
+        </header>
+
+        <div class="card">
+            <div class="validation-header">
+                <h2>System-Wide Validation</h2>
+                <button id="validateBtn" class="btn btn-primary">Run Validation</button>
+            </div>
+            <div id="validationStatus" class="validation-status"></div>
+        </div>
+
+        <!-- Overall Status -->
+        <div class="card" id="overallCard">
+            <h2>📊 Overall Status</h2>
+            <div id="overallStatus"></div>
+        </div>
+
+        <!-- Department Chain Validation -->
+        <div class="card" id="deptCard">
+            <h2>🏢 Department Chain</h2>
+            <div id="deptValidation"></div>
+        </div>
+
+        <!-- Class Chains Validation -->
+        <div class="card" id="classCard">
+            <h2>📚 Class Chains</h2>
+            <div id="classValidation"></div>
+        </div>
+
+        <!-- Student Chains Validation -->
+        <div class="card" id="studentCard">
+            <h2>👨‍🎓 Student Chains</h2>
+            <div id="studentValidation"></div>
+        </div>
+
+        <!-- Validation Errors -->
+        <div class="card" id="errorsCard">
+            <h2>⚠️ Validation Errors</h2>
+            <div id="validationErrors"></div>
+        </div>
+
+        <!-- Validation Details -->
+        <div class="card">
+            <h2>📖 Validation Process</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Step 1:</strong>
+                    <p>Validate Department Blockchain integrity</p>
+                </div>
+                <div class="info-item">
+                    <strong>Step 2:</strong>
+                    <p>Validate all Class Chains and parent references</p>
+                </div>
+                <div class="info-item">
+                    <strong>Step 3:</strong>
+                    <p>Validate all Student Chains and parent references</p>
+                </div>
+                <div class="info-item">
+                    <strong>Step 4:</strong>
+                    <p>Verify Proof of Work (PoW) for all blocks</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Blockchain-Based Attendance Management System</p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/validation.js"></script>
+</body>
+</html>

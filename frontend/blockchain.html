@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMS - Blockchain Explorer</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🔗 BAMS</div>
+            <ul class="nav-menu">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/departments">Departments</a></li>
+                <li><a href="/classes">Classes</a></li>
+                <li><a href="/students">Students</a></li>
+                <li><a href="/attendance">Attendance</a></li>
+                <li><a href="/blockchain" class="active">Blockchain</a></li>
+                <li><a href="/validation">Validation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>⛓️ Blockchain Explorer</h1>
+            <p>View all blockchain layers</p>
+        </header>
+
+        <!-- Department Blockchain -->
+        <div class="card">
+            <h2>🏢 Department Blockchain</h2>
+            <button id="loadDeptChain" class="btn btn-secondary">Load Department Chain</button>
+            <div id="deptChainContainer"></div>
+        </div>
+
+        <!-- Class Blockchain -->
+        <div class="card">
+            <h2>📚 Class Blockchain</h2>
+            <div class="form-group">
+                <label for="classDeptSelect">Select Department</label>
+                <select id="classDeptSelect">
+                    <option value="">-- Select Department --</option>
+                </select>
+            </div>
+            <button id="loadClassChain" class="btn btn-secondary">Load Class Chain</button>
+            <div id="classChainContainer"></div>
+        </div>
+
+        <!-- Student Blockchain -->
+        <div class="card">
+            <h2>👨‍🎓 Student Blockchain</h2>
+            <div class="form-group">
+                <label for="studentSelect">Select Student</label>
+                <select id="studentSelect">
+                    <option value="">-- Select Student --</option>
+                </select>
+            </div>
+            <button id="loadStudentChain" class="btn btn-secondary">Load Student Chain</button>
+            <div id="studentChainContainer"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Blockchain-Based Attendance Management System</p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/blockchain.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMS - Departments</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🔗 BAMS</div>
+            <ul class="nav-menu">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/departments" class="active">Departments</a></li>
+                <li><a href="/classes">Classes</a></li>
+                <li><a href="/students">Students</a></li>
+                <li><a href="/attendance">Attendance</a></li>
+                <li><a href="/blockchain">Blockchain</a></li>
+                <li><a href="/validation">Validation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>🏢 Department Management</h1>
+            <p>Add, update, and manage departments</p>
+        </header>
+
+        <div class="grid-2">
+            <!-- Add Department Form -->
+            <div class="card">
+                <h2>➕ Add Department</h2>
+                <form id="addDepartmentForm">
+                    <div class="form-group">
+                        <label for="deptName">Department Name</label>
+                        <input type="text" id="deptName" name="name" required 
+                               placeholder="e.g., Computer Science">
+                    </div>
+                    <div class="form-group">
+                        <label for="deptHead">Department Head</label>
+                        <input type="text" id="deptHead" name="head" required 
+                               placeholder="e.g., Dr. John Smith">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Department</button>
+                </form>
+            </div>
+
+            <!-- Update Department Form -->
+            <div class="card">
+                <h2>✏️ Update Department</h2>
+                <form id="updateDepartmentForm">
+                    <div class="form-group">
+                        <label for="updateDeptId">Select Department</label>
+                        <select id="updateDeptId" name="id" required>
+                            <option value="">-- Select Department --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateDeptName">New Name (optional)</label>
+                        <input type="text" id="updateDeptName" name="name" 
+                               placeholder="Leave empty to keep current">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateDeptHead">New Head (optional)</label>
+                        <input type="text" id="updateDeptHead" name="head" 
+                               placeholder="Leave empty to keep current">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Update Department</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Departments List -->
+        <div class="card">
+            <h2>📋 All Departments</h2>
+            <div id="loadingDepts" class="loading">Loading departments...</div>
+            <div id="departmentsList"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Blockchain-Based Attendance Management System</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/departments.js"></script>
+</body>
+</html>

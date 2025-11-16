@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMS - Classes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">🔗 BAMS</div>
+            <ul class="nav-menu">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/departments">Departments</a></li>
+                <li><a href="/classes" class="active">Classes</a></li>
+                <li><a href="/students">Students</a></li>
+                <li><a href="/attendance">Attendance</a></li>
+                <li><a href="/blockchain">Blockchain</a></li>
+                <li><a href="/validation">Validation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>📚 Class Management</h1>
+            <p>Add, update, and manage classes</p>
+        </header>
+
+        <div class="grid-2">
+            <!-- Add Class Form -->
+            <div class="card">
+                <h2>➕ Add Class</h2>
+                <form id="addClassForm">
+                    <div class="form-group">
+                        <label for="classDept">Department</label>
+                        <select id="classDept" name="departmentId" required>
+                            <option value="">-- Select Department --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="className">Class Name</label>
+                        <input type="text" id="className" name="name" required 
+                               placeholder="e.g., Data Structures">
+                    </div>
+                    <div class="form-group">
+                        <label for="classTeacher">Teacher</label>
+                        <input type="text" id="classTeacher" name="teacher" required 
+                               placeholder="e.g., Prof. Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="classCapacity">Capacity</label>
+                        <input type="number" id="classCapacity" name="capacity" required 
+                               min="1" placeholder="e.g., 30">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Class</button>
+                </form>
+            </div>
+
+            <!-- Update Class Form -->
+            <div class="card">
+                <h2>✏️ Update Class</h2>
+                <form id="updateClassForm">
+                    <div class="form-group">
+                        <label for="updateClassId">Select Class</label>
+                        <select id="updateClassId" name="id" required>
+                            <option value="">-- Select Class --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateClassName">New Name (optional)</label>
+                        <input type="text" id="updateClassName" name="name" 
+                               placeholder="Leave empty to keep current">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateClassTeacher">New Teacher (optional)</label>
+                        <input type="text" id="updateClassTeacher" name="teacher" 
+                               placeholder="Leave empty to keep current">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateClassCapacity">New Capacity (optional)</label>
+                        <input type="number" id="updateClassCapacity" name="capacity" 
+                               min="1" placeholder="Leave empty to keep current">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Update Class</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Filter -->
+        <div class="card">
+            <div class="filter-bar">
+                <label for="filterDept">Filter by Department:</label>
+                <select id="filterDept">
+                    <option value="">All Departments</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Classes List -->
+        <div class="card">
+            <h2>📋 All Classes</h2>
+            <div id="loadingClasses" class="loading">Loading classes...</div>
+            <div id="classesList"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Blockchain-Based Attendance Management System</p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/classes.js"></script>
+</body>
+</html>
