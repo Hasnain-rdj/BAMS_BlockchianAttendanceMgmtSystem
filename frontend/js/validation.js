@@ -184,4 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('classCard').style.display = 'none';
     document.getElementById('studentCard').style.display = 'none';
     document.getElementById('errorsCard').style.display = 'none';
+
+    // Mobile menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
 });

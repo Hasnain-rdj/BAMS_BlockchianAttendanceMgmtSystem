@@ -272,6 +272,16 @@ function viewBlockchain(studentId) {
 // Load data on page load
 document.addEventListener('DOMContentLoaded', () => {
     fetchDepartments();
-    fetchAllClasses();
+    fetchClasses();
     fetchStudents();
+
+    // Mobile menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
 });

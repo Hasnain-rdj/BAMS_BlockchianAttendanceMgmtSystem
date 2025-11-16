@@ -154,4 +154,16 @@ async function deleteDepartment(id) {
 }
 
 // Load departments on page load
-document.addEventListener('DOMContentLoaded', fetchDepartments);
+document.addEventListener('DOMContentLoaded', () => {
+    fetchDepartments();
+
+    // Mobile menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
+});

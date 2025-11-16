@@ -210,4 +210,14 @@ async function deleteClass(departmentId, classId) {
 document.addEventListener('DOMContentLoaded', () => {
     fetchDepartments();
     fetchClasses();
+
+    // Mobile menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
 });

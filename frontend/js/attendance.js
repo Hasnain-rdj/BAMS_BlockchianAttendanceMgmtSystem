@@ -372,4 +372,14 @@ function displayStudentBlockchain(blocks) {
 document.addEventListener('DOMContentLoaded', () => {
     fetchClasses();
     fetchAllStudents();
+
+    // Mobile menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
 });
