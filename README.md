@@ -9,6 +9,12 @@ A complete production-ready **3-layer hierarchical blockchain system** for manag
 
 > **🎓 Educational Project**: This system demonstrates blockchain fundamentals including custom implementation, PoW mining, SHA-256 hashing, and multi-layer validation without using external blockchain libraries.
 
+## 🌐 Live Demo
+
+- **Frontend:** Coming soon (Deploy to Netlify)
+- **Backend API:** [https://bams-lpjt.onrender.com](https://bams-lpjt.onrender.com)
+- **GitHub Repository:** [https://github.com/Hasnain-rdj/BAMS](https://github.com/Hasnain-rdj/BAMS)
+
 ---
 
 ## 🚀 Quick Start

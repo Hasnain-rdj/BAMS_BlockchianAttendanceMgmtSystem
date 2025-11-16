@@ -1,11 +1,11 @@
 // API Configuration
-// This will be replaced with your actual backend URL after deploying to Render
+// Backend deployed at: https://bams-lpjt.onrender.com
 const API_CONFIG = {
     // For local development
     LOCAL: 'http://localhost:3000/api',
     
-    // For production (update this after deploying backend to Render)
-    PRODUCTION: 'https://bams-backend.onrender.com/api',
+    // Production backend URL (Render.com)
+    PRODUCTION: 'https://bams-lpjt.onrender.com/api',
     
     // Auto-detect environment
     get BASE_URL() {
