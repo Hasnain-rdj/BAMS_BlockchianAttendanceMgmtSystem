@@ -22,13 +22,28 @@ const createBlockchainRoutes = require('./routes/blockchainRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
+// Middleware - CORS allows all origins for Netlify frontend
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from frontend
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Health check endpoint for Render
+app.get('/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'ok',
+        message: 'BAMS Backend is running',
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Serve static files from frontend (only in development)
+if (process.env.NODE_ENV !== 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend')));
+}
 
 // Initialize blockchain manager and storage
 const blockchainManager = new BlockchainManager();
@@ -71,34 +86,36 @@ app.get('/api', (req, res) => {
     });
 });
 
-// Serve frontend pages
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
-});
+// Serve frontend pages (only in development)
+if (process.env.NODE_ENV !== 'production') {
+    app.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/index.html'));
+    });
 
-app.get('/departments', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/departments.html'));
-});
+    app.get('/departments', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/departments.html'));
+    });
 
-app.get('/classes', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/classes.html'));
-});
+    app.get('/classes', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/classes.html'));
+    });
 
-app.get('/students', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/students.html'));
-});
+    app.get('/students', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/students.html'));
+    });
 
-app.get('/attendance', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/attendance.html'));
-});
+    app.get('/attendance', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/attendance.html'));
+    });
 
-app.get('/blockchain', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/blockchain.html'));
-});
+    app.get('/blockchain', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/blockchain.html'));
+    });
 
-app.get('/validation', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/validation.html'));
-});
+    app.get('/validation', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/validation.html'));
+    });
+}
 
 // Auto-save blockchain data every 30 seconds
 setInterval(() => {
@@ -134,13 +151,14 @@ app.use((req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log('='.repeat(60));
     console.log('🔗 BLOCKCHAIN-BASED ATTENDANCE MANAGEMENT SYSTEM');
     console.log('='.repeat(60));
-    console.log(`Server running on: http://localhost:${PORT}`);
-    console.log(`API endpoint: http://localhost:${PORT}/api`);
-    console.log(`Frontend: http://localhost:${PORT}`);
+    console.log(`Server running on port: ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`API endpoint: /api`);
+    console.log(`Health check: /health`);
     console.log('='.repeat(60));
     console.log('System Stats:');
     const stats = blockchainManager.getSystemStats();
