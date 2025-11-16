@@ -1,5 +1,5 @@
-// API Base URL
-const API_URL = 'http://localhost:3000/api';
+// API Base URL (from config.js)
+const API_URL = window.API_CONFIG ? window.API_CONFIG.BASE_URL : 'http://localhost:3000/api';
 
 let allDepartments = [];
 let allStudents = [];
