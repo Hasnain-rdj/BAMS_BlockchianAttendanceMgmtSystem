@@ -5,12 +5,241 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BAMS - Blockchain Explorer</title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* 3D Tree Visualization Styles */
+        .tree-container {
+            width: 100%;
+            min-height: 600px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 1rem;
+            overflow: auto;
+            position: relative;
+        }
+
+        .tree-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: fit-content;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .tree-node {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            min-width: 140px;
+            max-width: 180px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tree-node:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            z-index: 20;
+        }
+
+        .tree-node.genesis {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border: 3px solid #ff9800;
+        }
+
+        .tree-node.active {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: white;
+        }
+
+        .tree-node.deleted {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            color: white;
+            opacity: 0.7;
+        }
+
+        .node-index {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+
+        .node-type {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+        }
+
+        .node-hash {
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: #64748b;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .node-connector {
+            position: absolute;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            z-index: 1;
+        }
+
+        .node-connector.vertical {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .node-connector.horizontal {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Tooltip */
+        .node-tooltip {
+            position: absolute;
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            min-width: 300px;
+            max-width: 400px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .node-tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip-header {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .tooltip-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            font-size: 0.85rem;
+        }
+
+        .tooltip-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .tooltip-value {
+            word-wrap: break-word;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .view-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active-view {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .view-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Legend */
+        .tree-legend {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .tree-container {
+                min-height: 400px;
+                padding: 1rem;
+            }
+
+            .tree-level {
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+
+            .tree-node {
+                min-width: 100px;
+                max-width: 120px;
+                padding: 0.75rem;
+            }
+
+            .node-tooltip {
+                min-width: 250px;
+                max-width: 90vw;
+            }
+
+            .tooltip-item {
+                grid-template-columns: 100px 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-brand">🔗 BAMS</div>
-            <ul class="nav-menu">
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
                 <li><a href="/">Dashboard</a></li>
                 <li><a href="/departments">Departments</a></li>
                 <li><a href="/classes">Classes</a></li>
@@ -25,13 +254,19 @@
     <div class="container">
         <header class="page-header">
             <h1>⛓️ Blockchain Explorer</h1>
-            <p>View all blockchain layers</p>
+            <p>Interactive 3D Tree Visualization</p>
         </header>
+
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button class="view-btn active-view" onclick="setView('tree')">🌳 Tree View</button>
+            <button class="view-btn" onclick="setView('list')">📋 List View</button>
+        </div>
 
         <!-- Department Blockchain -->
         <div class="card">
             <h2>🏢 Department Blockchain</h2>
-            <button id="loadDeptChain" class="btn btn-secondary">Load Department Chain</button>
+            <button id="loadDeptChain" class="btn btn-primary">Load Department Chain</button>
             <div id="deptChainContainer"></div>
         </div>
 
@@ -40,11 +275,11 @@
             <h2>📚 Class Blockchain</h2>
             <div class="form-group">
                 <label for="classDeptSelect">Select Department</label>
-                <select id="classDeptSelect">
+                <select id="classDeptSelect" class="form-control">
                     <option value="">-- Select Department --</option>
                 </select>
             </div>
-            <button id="loadClassChain" class="btn btn-secondary">Load Class Chain</button>
+            <button id="loadClassChain" class="btn btn-primary">Load Class Chain</button>
             <div id="classChainContainer"></div>
         </div>
 
@@ -53,11 +288,11 @@
             <h2>👨‍🎓 Student Blockchain</h2>
             <div class="form-group">
                 <label for="studentSelect">Select Student</label>
-                <select id="studentSelect">
+                <select id="studentSelect" class="form-control">
                     <option value="">-- Select Student --</option>
                 </select>
             </div>
-            <button id="loadStudentChain" class="btn btn-secondary">Load Student Chain</button>
+            <button id="loadStudentChain" class="btn btn-primary">Load Student Chain</button>
             <div id="studentChainContainer"></div>
         </div>
     </div>
@@ -67,6 +302,7 @@
     </footer>
 
     <div id="toast" class="toast"></div>
+    <div class="node-tooltip" id="nodeTooltip"></div>
 
     <script src="/config.js"></script>
     <script src="/js/blockchain.js"></script>

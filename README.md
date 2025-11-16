@@ -1,654 +1,490 @@
-# 🔗 Blockchain-Based Attendance Management System (BAMS)
+# 🔗 BAMS - Blockchain-Based Attendance Management System
 
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org/)
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://battendancemgmtsys.netlify.app/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Hasnain-rdj/bams/graphs/commit-activity)
 
-A complete production-ready **3-layer hierarchical blockchain system** for managing departments, classes, students, and attendance records with **Proof of Work (PoW)** consensus mechanism.
+A production-ready **3-layer hierarchical blockchain system** for managing educational institutions with custom Proof of Work consensus, SHA-256 hashing, and immutable attendance ledgers.
 
-> **🎓 Educational Project**: This system demonstrates blockchain fundamentals including custom implementation, PoW mining, SHA-256 hashing, and multi-layer validation without using external blockchain libraries.
+## 🌐 Live Application
 
-## 🌐 Live Demo
-
-- **Frontend:** Coming soon (Deploy to Netlify)
-- **Backend API:** [https://bams-lpjt.onrender.com](https://bams-lpjt.onrender.com)
+- **Frontend (Netlify):** [https://battendancemgmtsys.netlify.app/](https://battendancemgmtsys.netlify.app/)
+- **Backend API (Render):** [https://bams-lpjt.onrender.com](https://bams-lpjt.onrender.com)
 - **GitHub Repository:** [https://github.com/Hasnain-rdj/BAMS](https://github.com/Hasnain-rdj/BAMS)
+
+---
+
+## 📖 Overview
+
+BAMS is an educational blockchain project demonstrating:
+- **Custom blockchain implementation** without external blockchain libraries
+- **3-layer hierarchical architecture** (Department → Class → Student)
+- **Proof of Work mining** with configurable difficulty
+- **Immutable attendance records** stored as blockchain transactions
+- **Interactive 3D tree visualization** of blockchain structure
+- **Full CRUD operations** with blockchain integrity
+
+---
+
+## ✨ Key Features
+
+### Blockchain Core
+- ✅ SHA-256 cryptographic hashing
+- ✅ Proof of Work (PoW) mining with difficulty 4
+- ✅ Multi-layer chain validation
+- ✅ Parent-child hash linking
+- ✅ Genesis block creation
+- ✅ Append-only immutable ledger
+
+### Application Features
+- 📊 **Dashboard** - Real-time statistics and metrics
+- 🏢 **Department Management** - Create and manage departments
+- 📚 **Class Management** - Organize classes by department
+- 👨‍🎓 **Student Management** - Complete student lifecycle
+- 📝 **Attendance Tracking** - Blockchain-based attendance records
+- ⛓️ **Blockchain Explorer** - Interactive 3D tree visualization with hover tooltips
+- ✅ **Chain Validation** - System-wide integrity verification
+- 🔍 **Search & Filter** - Quick student and class lookup
+- 📱 **Responsive Design** - Mobile, tablet, and desktop optimized
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────┐
+│   Department Chain      │  Independent top-level blockchain
+│   (Genesis: prev=0)     │  CRUD operations create blocks
+└──────────┬──────────────┘
+           │ (links via hash)
+           ▼
+┌─────────────────────────┐
+│   Class Chain           │  Child of Department
+│   (Genesis: prev=Dept)  │  One chain per department
+└──────────┬──────────────┘
+           │ (links via hash)
+           ▼
+┌─────────────────────────┐
+│   Student Chain         │  Child of Class
+│   (Genesis: prev=Class) │  One chain per student
+│   + Attendance Blocks   │  Attendance appended as blocks
+└─────────────────────────┘
+```
 
 ---
 
 ## 🚀 Quick Start
 
+### Prerequisites
+- Node.js >= 18.0.0
+- npm or yarn
+- Modern web browser
+
+### Installation
+
 ```bash
-# Clone the repository
-git clone https://github.com/Hasnain-rdj/bams.git
-cd bams
+# Clone repository
+git clone https://github.com/Hasnain-rdj/BAMS.git
+cd BAMS
 
 # Install dependencies
 npm install
 
-# Start the server
+# Start development server
 npm start
+```
 
-# Open browser
-# Navigate to http://localhost:3000
+Server runs at `http://localhost:3000`
+
+### Production Deployment
+
+**Backend (Render.com):**
+```bash
+# Build command: npm install
+# Start command: npm start
+# Environment: NODE_ENV=production
+```
+
+**Frontend (Netlify):**
+```bash
+# Build command: (none)
+# Publish directory: frontend
+# Redirects: configured via netlify.toml
 ```
 
 ---
 
-## 📋 Table of Contents
-
-- [Quick Start](#-quick-start)
-- [Features](#-features)
-- [System Architecture](#️-system-architecture)
-- [Technology Stack](#️-technology-stack)
-- [Installation](#-installation)
-- [How to Run](#-how-to-run)
-- [Usage Guide](#-usage-guide)
-- [API Documentation](#-api-documentation)
-- [Blockchain Structure](#-blockchain-structure)
-- [Validation Process](#-validation-process)
-- [Project Structure](#-project-structure)
-- [Screenshots](#-screenshots)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Author](#-author)
-- [Acknowledgments](#-acknowledgments)
-
----
-
-## 🏗️ System Architecture
-
-### 3-Layer Hierarchical Blockchain
-
-```
-┌─────────────────────────────────────────┐
-│      DEPARTMENT BLOCKCHAIN (Layer 1)    │
-│  - Independent top-level chain          │
-│  - Genesis block with metadata          │
-│  - CRUD operations as blocks            │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│       CLASS BLOCKCHAIN (Layer 2)        │
-│  - Child of Department Chain            │
-│  - Genesis prev_hash = Department hash  │
-│  - One chain per department             │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│      STUDENT BLOCKCHAIN (Layer 3)       │
-│  - Child of Class Chain                 │
-│  - Genesis prev_hash = Class hash       │
-│  - One chain per student                │
-│  - Attendance blocks appended           │
-└─────────────────────────────────────────┘
-```
-
----
-
-## ✨ Features
-
-### Core Blockchain Features
-- ✅ **Custom Blockchain Implementation** (no external blockchain libraries)
-- ✅ **Proof of Work (PoW)** with difficulty 4 (hash starts with "0000")
-- ✅ **SHA-256 Hashing** using Node.js crypto module
-- ✅ **Append-only Architecture** (immutable history)
-- ✅ **Multi-layer Validation** (recursive parent-child verification)
-- ✅ **Block Mining** with nonce calculation
-- ✅ **Chain Integrity Verification**
-
-### Application Features
-- 📊 **Dashboard** with system statistics
-- 🏢 **Department Management** (Add, Update, Delete via blockchain)
-- 📚 **Class Management** (Linked to departments)
-- 👨‍🎓 **Student Management** (Linked to classes)
-- ✅ **Attendance Marking** (Present, Absent, Leave)
-- 📈 **Attendance Reports** by class and date
-- ⛓️ **Blockchain Explorer** for all 3 layers
-- 🔐 **Multi-layer Validation** interface
-- 📱 **Responsive UI** (works on mobile/tablet/desktop)
-
-### CRUD Operations
-All CRUD operations follow **append-only blockchain behavior**:
-- **Add**: New block with data
-- **Update**: New block with updated fields (old blocks preserved)
-- **Delete**: New block with `status: "deleted"` (data never removed)
-- **Search**: Traverse all blocks to build current state
-
----
-
-## 🛠️ Technology Stack
+## 💻 Technology Stack
 
 ### Backend
-- **Node.js** (v14+)
-- **Express.js** (Web server)
-- **Crypto** (SHA-256 hashing - built-in Node.js module)
-- **UUID** (Unique ID generation)
-- **File System** (JSON-based storage)
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web framework
+- **Crypto (built-in)** - SHA-256 hashing
+- **UUID** - Unique identifier generation
+- **CORS** - Cross-origin resource sharing
 
 ### Frontend
-- **HTML5**
-- **CSS3** (Custom styles, responsive design)
-- **Vanilla JavaScript** (No frameworks - pure JS)
-- **Fetch API** (REST API calls)
+- **HTML5** - Semantic markup
+- **CSS3** - Modern styling with variables and gradients
+- **Vanilla JavaScript** - No frameworks
+- **Fetch API** - HTTP requests
 
 ### Blockchain
-- **Custom implementation** (no libraries)
-- **Proof of Work** consensus
-- **3-layer hierarchical structure**
-- **Parent-child hash linking**
+- **Custom Implementation** - No external blockchain libraries
+- **SHA-256** - Cryptographic hash function
+- **Proof of Work** - Mining with difficulty 4
+- **JSON Storage** - File-based persistence
 
 ---
 
-## ⛓️ Blockchain Structure
+## 📱 Features Overview
 
-### Block Structure
-Every block contains:
-```javascript
-{
-  index: 0,                    // Block number
-  timestamp: 1234567890,       // Unix timestamp
-  transactions: {...},         // Block data (dept/class/student/attendance)
-  prev_hash: "abc123...",      // Previous block hash
-  nonce: 12345,                // PoW nonce
-  hash: "0000abc..."           // SHA-256 hash (starts with "0000")
-}
-```
+### 1. Dashboard
+- System-wide statistics
+- Total departments, classes, students
+- Quick navigation
 
-### Genesis Blocks
-- **Department Genesis**: `prev_hash = "0"`
-- **Class Genesis**: `prev_hash = departmentLatestHash`
-- **Student Genesis**: `prev_hash = classLatestHash`
+### 2. Department Management
+- Create new departments
+- Update existing departments
+- Delete (soft delete via blockchain)
+- View all departments
 
-### Mining Algorithm
-```javascript
-while (hash does not start with "0000") {
-  nonce++
-  hash = SHA256(index + timestamp + transactions + prev_hash + nonce)
-}
-```
+### 3. Class Management
+- Add classes to departments
+- Update class information
+- Department-wise filtering
+- Teacher assignment
 
----
+### 4. Student Management
+- Complete student profiles
+- Roll number generation
+- Class enrollment
+- Search by name/roll number
+- Student blockchain view
 
-## 📥 Installation
+### 5. Attendance System
+- Mark attendance (Present/Absent/Leave)
+- Bulk attendance for entire class
+- Individual student history
+- Date-wise records
+- Immutable blockchain storage
+- Real-time blockchain visualization
 
-### Prerequisites
-- **Node.js** v14 or higher
-- **npm** (comes with Node.js)
+### 6. Blockchain Explorer (3D Tree View)
+- **Interactive Tree Visualization** - Vertical connected node structure
+- **Hover Tooltips** - Detailed block information on hover
+- **Color-coded Nodes:**
+  - 🟡 Genesis Block (gold gradient)
+  - 🟢 Active Block (green gradient)
+  - 🔴 Deleted Block (red gradient, semi-transparent)
+  - ⚪ Regular Block (white)
+- **Toggle Views** - Switch between Tree and List view
+- **Responsive** - Works on all device sizes
+- **Detailed Information:**
+  - Block index and hash
+  - Timestamp
+  - Transaction data
+  - Nonce value
+  - Previous hash
+  - PoW verification (0000 prefix)
 
-### Step 1: Clone or Download the Project
-```bash
-cd Blockchain_Assignment_3
-```
-
-### Step 2: Install Dependencies
-```bash
-npm install
-```
-
-This will install:
-- `express` - Web server
-- `cors` - Cross-origin resource sharing
-- `uuid` - Unique ID generation
-
-### Step 3: Verify Installation
-```bash
-node --version
-npm --version
-```
-
----
-
-## 🚀 How to Run
-
-### Option 1: Production Mode
-```bash
-npm start
-```
-
-### Option 2: Development Mode (Auto-restart on file changes)
-```bash
-npm run dev
-```
-
-### Expected Output
-```
-============================================================
-🔗 BLOCKCHAIN-BASED ATTENDANCE MANAGEMENT SYSTEM
-============================================================
-Server running on: http://localhost:3000
-API endpoint: http://localhost:3000/api
-Frontend: http://localhost:3000
-============================================================
-System Stats:
-  Departments: 0
-  Classes: 0
-  Students: 0
-  Total Blocks: 1
-  Chain Valid: ✓
-============================================================
-```
-
-### Access the Application
-Open your browser and navigate to:
-- **Frontend**: http://localhost:3000
-- **API**: http://localhost:3000/api
+### 7. Validation System
+- Verify entire blockchain integrity
+- Check all three layers
+- Hash verification
+- PoW verification
+- Parent-child link validation
 
 ---
 
-## 📖 Usage Guide
-
-### 1. Add a Department
-1. Navigate to **Departments** page
-2. Fill in department name and head
-3. Click "Add Department"
-4. A new block will be mined and added to the department chain
-
-### 2. Add a Class
-1. Navigate to **Classes** page
-2. Select a department
-3. Fill in class details (name, teacher, capacity)
-4. Click "Add Class"
-5. A new class chain is created with genesis block referencing the department
-
-### 3. Add a Student
-1. Navigate to **Students** page
-2. Select department and class
-3. Fill in student details (name, roll number, email)
-4. Click "Add Student"
-5. A new student chain is created with genesis block referencing the class
-
-### 4. Mark Attendance
-1. Navigate to **Attendance** page
-2. Select a class
-3. Mark each student as Present, Absent, or Leave
-4. Click "Submit Attendance"
-5. A new attendance block is added to each student's blockchain
-
-### 5. View Blockchain
-1. Navigate to **Blockchain** page
-2. Select Department/Class/Student
-3. Click "Load Chain"
-4. View all blocks with hashes, nonces, and data
-
-### 6. Validate System
-1. Navigate to **Validation** page
-2. Click "Run Validation"
-3. System validates:
-   - All block hashes
-   - Proof of Work (0000 prefix)
-   - Parent-child hash references
-   - Chain integrity
-
----
-
-## 🔌 API Documentation
-
-### Base URL
-```
-http://localhost:3000/api
-```
+## 🔧 API Endpoints
 
 ### Departments
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/departments` | Get all departments |
-| GET | `/departments/:id` | Get single department |
-| POST | `/departments` | Add department |
-| PUT | `/departments/:id` | Update department |
-| DELETE | `/departments/:id` | Delete department |
+```
+GET    /api/departments          - List all departments
+GET    /api/departments/:id      - Get single department
+POST   /api/departments          - Create department
+PUT    /api/departments/:id      - Update department
+DELETE /api/departments/:id      - Delete department
+```
 
 ### Classes
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/classes` | Get all classes |
-| GET | `/classes/department/:departmentId` | Get classes by department |
-| GET | `/classes/:departmentId/:classId` | Get single class |
-| POST | `/classes` | Add class |
-| PUT | `/classes/:departmentId/:classId` | Update class |
-| DELETE | `/classes/:departmentId/:classId` | Delete class |
+```
+GET    /api/classes                        - List all classes
+GET    /api/classes/:departmentId/:classId - Get single class
+GET    /api/classes/department/:deptId     - Get classes by department
+POST   /api/classes                        - Create class
+PUT    /api/classes/:deptId/:classId       - Update class
+DELETE /api/classes/:deptId/:classId       - Delete class
+```
 
 ### Students
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/students` | Get all students |
-| GET | `/students/search?query=...` | Search students |
-| GET | `/students/class/:classId` | Get students by class |
-| GET | `/students/:id` | Get single student |
-| GET | `/students/:id/blockchain` | Get student blockchain |
-| POST | `/students` | Add student |
-| PUT | `/students/:id` | Update student |
-| DELETE | `/students/:id` | Delete student |
+```
+GET    /api/students                    - List all students
+GET    /api/students/:id                - Get single student
+GET    /api/students/class/:classId     - Get students by class
+GET    /api/students/search?query=...   - Search students
+POST   /api/students                    - Create student
+PUT    /api/students/:id                - Update student
+DELETE /api/students/:id                - Delete student
+```
 
 ### Attendance
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/attendance/mark` | Mark attendance for one student |
-| POST | `/attendance/bulk` | Bulk mark attendance |
-| GET | `/attendance/student/:studentId` | Get student attendance |
-| GET | `/attendance/student/:studentId/summary` | Get attendance summary |
-| GET | `/attendance/class/:classId/today` | Get today's attendance |
-| GET | `/attendance/class/:classId?date=YYYY-MM-DD` | Get attendance by date |
+```
+POST   /api/attendance/mark             - Mark single attendance
+POST   /api/attendance/bulk             - Mark bulk attendance
+GET    /api/attendance/student/:id      - Get student attendance
+GET    /api/attendance/student/:id/summary - Get attendance summary
+```
 
 ### Blockchain
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/blockchain/validate` | Validate all chains |
-| GET | `/blockchain/stats` | Get system statistics |
-| GET | `/blockchain/department` | Get department blockchain |
-| GET | `/blockchain/class/:departmentId` | Get class blockchain |
-| GET | `/blockchain/export` | Export all blockchain data |
+```
+GET    /api/blockchain/department           - Get department blockchain
+GET    /api/blockchain/class/:deptId        - Get class blockchain
+GET    /api/students/:studentId/blockchain  - Get student blockchain
+POST   /api/blockchain/validate             - Validate all chains
+```
 
 ---
 
-## ✅ Validation Process
-
-### Multi-layer Validation Steps
-
-1. **Department Chain Validation**
-   - Verify all block hashes
-   - Check PoW (hash starts with "0000")
-   - Validate prev_hash links
-
-2. **Class Chains Validation**
-   - Validate each class chain
-   - Verify genesis block references parent department hash
-   - Check all blocks in chain
-
-3. **Student Chains Validation**
-   - Validate each student chain
-   - Verify genesis block references parent class hash
-   - Check attendance blocks
-
-4. **Integrity Check**
-   - Any tampering invalidates dependent chains
-   - Parent hash mismatch detected
-   - Modified blocks fail hash verification
-
----
-
-## 📁 Project Structure
+## 📂 Project Structure
 
 ```
-Blockchain_Assignment_3/
-│
+BAMS/
 ├── backend/
 │   ├── blockchain/
-│   │   ├── Block.js                    # Block class with PoW mining
-│   │   ├── Blockchain.js               # Base blockchain class
-│   │   ├── DepartmentChain.js          # Department blockchain
-│   │   ├── ClassChain.js               # Class blockchain
-│   │   ├── StudentChain.js             # Student blockchain
-│   │   └── BlockchainManager.js        # Central manager
-│   │
+│   │   ├── Block.js                 # Core block with PoW mining
+│   │   ├── Blockchain.js            # Base blockchain class
+│   │   ├── DepartmentChain.js       # Department-level chain
+│   │   ├── ClassChain.js            # Class-level chain
+│   │   ├── StudentChain.js          # Student-level chain
+│   │   └── BlockchainManager.js     # Central orchestrator
 │   ├── controllers/
-│   │   ├── departmentController.js     # Department CRUD
-│   │   ├── classController.js          # Class CRUD
-│   │   ├── studentController.js        # Student CRUD
-│   │   ├── attendanceController.js     # Attendance operations
-│   │   └── blockchainController.js     # Blockchain operations
-│   │
+│   │   ├── departmentController.js
+│   │   ├── classController.js
+│   │   ├── studentController.js
+│   │   ├── attendanceController.js
+│   │   └── blockchainController.js
 │   ├── routes/
-│   │   ├── departmentRoutes.js         # Department routes
-│   │   ├── classRoutes.js              # Class routes
-│   │   ├── studentRoutes.js            # Student routes
-│   │   ├── attendanceRoutes.js         # Attendance routes
-│   │   └── blockchainRoutes.js         # Blockchain routes
-│   │
+│   │   ├── departmentRoutes.js
+│   │   ├── classRoutes.js
+│   │   ├── studentRoutes.js
+│   │   ├── attendanceRoutes.js
+│   │   └── blockchainRoutes.js
 │   ├── models/
-│   │   └── Storage.js                  # JSON file storage
-│   │
+│   │   └── Storage.js               # JSON file persistence
 │   ├── utils/
-│   │   └── validators.js               # Input validation
-│   │
-│   ├── data/
-│   │   └── blockchain.json             # Persisted blockchain data
-│   │
-│   └── server.js                       # Express server entry point
-│
+│   │   └── validators.js            # Input validation
+│   └── server.js                    # Express app entry
 ├── frontend/
 │   ├── css/
-│   │   └── style.css                   # All styles
-│   │
+│   │   └── style.css                # Responsive styles
 │   ├── js/
-│   │   ├── dashboard.js                # Dashboard logic
-│   │   ├── departments.js              # Department management
-│   │   ├── classes.js                  # Class management
-│   │   ├── students.js                 # Student management
-│   │   ├── attendance.js               # Attendance marking
-│   │   ├── blockchain.js               # Blockchain explorer
-│   │   └── validation.js               # Validation interface
-│   │
-│   ├── index.html                      # Dashboard page
-│   ├── departments.html                # Departments page
-│   ├── classes.html                    # Classes page
-│   ├── students.html                   # Students page
-│   ├── attendance.html                 # Attendance page
-│   ├── blockchain.html                 # Blockchain explorer
-│   └── validation.html                 # Validation page
-│
-├── package.json                        # Dependencies
-└── README.md                           # This file
+│   │   ├── dashboard.js
+│   │   ├── departments.js
+│   │   ├── classes.js
+│   │   ├── students.js
+│   │   ├── attendance.js
+│   │   ├── blockchain.js            # 3D tree visualization
+│   │   └── validation.js
+│   ├── config.js                    # Environment-aware API config
+│   ├── index.html
+│   ├── departments.html
+│   ├── classes.html
+│   ├── students.html
+│   ├── attendance.html
+│   ├── blockchain.html              # Interactive tree view
+│   ├── validation.html
+│   └── _redirects                   # Netlify SPA routing
+├── package.json
+├── netlify.toml
+└── README.md
 ```
 
 ---
 
-## 🔒 Security Features
+## 🔐 Blockchain Implementation Details
 
-- **Immutable History**: Blocks cannot be edited or deleted
-- **Hash Verification**: SHA-256 ensures data integrity
-- **Proof of Work**: Computational proof prevents tampering
-- **Parent-Child Linking**: Changes invalidate dependent chains
-- **Append-Only**: All operations create new blocks
-- **Validation**: Multi-layer integrity verification
-
----
-
-## 🎯 Key Highlights
-
-1. ✅ **No External Blockchain Libraries** - 100% custom implementation
-2. ✅ **True 3-Layer Hierarchy** - Department → Class → Student
-3. ✅ **Full CRUD via Blockchain** - All operations create blocks
-4. ✅ **Proof of Work Mining** - SHA-256 with difficulty 4
-5. ✅ **Multi-layer Validation** - Recursive parent-child verification
-6. ✅ **Attendance Blockchain** - Each student has full attendance history
-7. ✅ **File-based Persistence** - Automatic save/load
-8. ✅ **Clean UI** - No frameworks, pure HTML/CSS/JS
-
----
-
-## 📝 Example Workflow
-
-1. **Add Department "Computer Science"**
-   - Block mined with PoW
-   - Hash: `0000a1b2c3...`
-
-2. **Add Class "Data Structures" to CS Department**
-   - New class chain created
-   - Genesis block prev_hash = `0000a1b2c3...`
-   - Block mined with PoW
-
-3. **Add Student "Alice" to Data Structures**
-   - New student chain created
-   - Genesis block references class chain
-   - Profile block added
-
-4. **Mark Alice Present on 2025-11-16**
-   - New attendance block added to Alice's chain
-   - Block mined with PoW
-   - Hash: `0000x9y8z7...`
-
-5. **Validate System**
-   - All chains verified
-   - Parent references validated
-   - PoW checked on all blocks
-   - Result: ✓ VALID
-
----
-
-## 🐛 Troubleshooting
-
-### Port Already in Use
-```bash
-# Change port in backend/server.js
-const PORT = process.env.PORT || 3001; // Use different port
+### Block Structure
+```javascript
+{
+  index: Number,           // Sequential block number
+  timestamp: Number,       // Unix timestamp
+  transactions: Object,    // Block data (dept/class/student/attendance)
+  prev_hash: String,       // Previous block hash (SHA-256)
+  hash: String,            // Current block hash (SHA-256)
+  nonce: Number           // PoW nonce value
+}
 ```
 
-### Module Not Found
-```bash
-npm install
+### Proof of Work Mining
+```javascript
+// Block.js - mineBlock() method
+mineBlock(difficulty = 4) {
+    const target = '0'.repeat(difficulty);
+    while (this.hash.substring(0, difficulty) !== target) {
+        this.nonce++;
+        this.hash = this.calculateHash();
+    }
+}
 ```
 
-### Cannot Load Frontend
-- Ensure server is running
-- Check http://localhost:3000 (not file://)
+### SHA-256 Hashing
+```javascript
+calculateHash() {
+    const data = this.index + 
+                 this.timestamp + 
+                 JSON.stringify(this.transactions) + 
+                 this.prev_hash + 
+                 this.nonce;
+    return crypto.createHash('sha256').update(data).digest('hex');
+}
+```
+
+### Chain Validation
+```javascript
+isChainValid() {
+    for (let i = 1; i < this.chain.length; i++) {
+        const current = this.chain[i];
+        const previous = this.chain[i - 1];
+
+        // Verify hash hasn't been tampered with
+        if (current.hash !== current.calculateHash()) return false;
+
+        // Verify PoW
+        if (!current.hasValidProofOfWork(4)) return false;
+
+        // Verify chain link
+        if (current.prev_hash !== previous.hash) return false;
+    }
+    return true;
+}
+```
 
 ---
 
-## 📧 Support
+## 📱 Responsive Design
 
-For issues or questions:
-1. Check the console for error messages
-2. Verify Node.js version (14+)
-3. Ensure all dependencies are installed
-4. Check that port 3000 is available
+The application is fully responsive with breakpoints at:
+- **Desktop:** 1024px+ (full layout)
+- **Tablet:** 768px - 1024px (2-column grid)
+- **Mobile:** < 768px (single column, collapsible menu)
 
----
-
-## 🎓 Educational Purpose
-
-This system demonstrates:
-
-- Custom blockchain implementation
-- Proof of Work consensus
-- Hierarchical blockchain architecture
-- Immutable data structures
-- Hash-based integrity
-- Parent-child chain relationships
-- Real-world blockchain application
+### Mobile Features:
+- Hamburger navigation menu
+- Touch-friendly buttons
+- Scrollable tables
+- Optimized tree visualization
+- Responsive tooltips
+- Full-width forms
 
 ---
 
-## 📸 Screenshots
+## 🎨 UI/UX Features
 
-### Dashboard
-![Dashboard](https://via.placeholder.com/800x400/4CAF50/FFFFFF?text=BAMS+Dashboard)
-*System statistics and overview*
+### 3D Tree Visualization
+- **Vertical Flow:** Top-to-bottom blockchain representation
+- **Node Colors:** Visual status indication (genesis/active/deleted)
+- **Hover Effects:** 3D lift animation on hover
+- **Tooltips:** Detailed block information overlay
+- **Responsive:** Adapts to screen size
+- **Legend:** Color-coded guide
+- **View Toggle:** Switch between Tree and List modes
 
-### Blockchain Explorer
-![Blockchain Explorer](https://via.placeholder.com/800x400/2196F3/FFFFFF?text=Blockchain+Explorer)
-*View all 3 layers of blockchain*
+### Design System
+- **Color Palette:**
+  - Primary: `#2563eb` (Blue)
+  - Success: `#10b981` (Green)
+  - Warning: `#f59e0b` (Orange)
+  - Danger: `#ef4444` (Red)
+  - Dark: `#1e293b` (Navy)
+- **Typography:** System fonts (Segoe UI)
+- **Shadows:** Layered depth with `box-shadow`
+- **Gradients:** Genesis and status blocks
+- **Animations:** Smooth transitions on all interactive elements
 
-### Attendance Management
-![Attendance](https://via.placeholder.com/800x400/FF9800/FFFFFF?text=Attendance+Management)
-*Mark and track attendance with blockchain*
+---
 
-> **Note**: Replace placeholder images with actual screenshots by adding images to a `/screenshots` folder and updating the paths.
+## 🧪 Testing
+
+### Manual Testing
+1. Create a department
+2. Add a class to that department
+3. Add a student to that class
+4. Mark attendance for the student
+5. View the student's blockchain
+6. Verify chain integrity
+7. Check blockchain explorer tree view
+
+### Validation Checks
+- All blocks have valid PoW (hash starts with "0000")
+- All blocks are properly linked (prev_hash matches)
+- No broken parent-child relationships
+- Data integrity maintained across operations
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how you can help:
+Contributions are welcome! Please follow these steps:
 
-1. **Fork the Project**
-   ```bash
-   git clone https://github.com/Hasnain-rdj/bams.git
-   ```
-
-2. **Create Feature Branch**
-   ```bash
-   git checkout -b feature/AmazingFeature
-   ```
-
-3. **Commit Changes**
-   ```bash
-   git commit -m 'Add some AmazingFeature'
-   ```
-
-4. **Push to Branch**
-   ```bash
-   git push origin feature/AmazingFeature
-   ```
-
-5. **Open Pull Request**
-
-### Contribution Guidelines
-
-- Follow existing code style
-- Write clear commit messages
-- Add tests for new features
-- Update documentation
-- Ensure all tests pass
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-## 📜 License
+## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2025 BAMS Development Team
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 👨‍💻 Author
+## 👤 Author
 
 **Hasnain**
 
 - GitHub: [@Hasnain-rdj](https://github.com/Hasnain-rdj)
 - Email: mhussnainzardari34@gmail.com
+- Project: [BAMS](https://github.com/Hasnain-rdj/BAMS)
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Inspired by blockchain technology and its educational applications
-- Built with modern web development best practices
-- Thanks to the open-source community for tools and inspiration
-- Special thanks to all contributors
+- Built with Node.js and Express.js
+- Inspired by blockchain technology and educational management needs
+- Deployed on Render (backend) and Netlify (frontend)
 
 ---
 
-## ⭐ Show Your Support
+## 📊 Project Statistics
 
-If this project helped you learn about blockchain technology, please give it a ⭐️!
-
----
-
-## 📊 Project Stats
-
-![GitHub repo size](https://img.shields.io/github/repo-size/Hasnain-rdj/bams)
-![GitHub stars](https://img.shields.io/github/stars/Hasnain-rdj/bams?style=social)
-![GitHub forks](https://img.shields.io/github/forks/Hasnain-rdj/bams?style=social)
+- **Total Files:** 35+
+- **Lines of Code:** 6400+
+- **Backend Files:** 19
+- **Frontend Files:** 15
+- **API Endpoints:** 25+
+- **Blockchain Layers:** 3
 
 ---
 
-**🔗 BAMS - Blockchain-Based Attendance Management System**  
-*Securing education data with blockchain technology*
+## 🔗 Useful Links
+
+- [Live Demo](https://battendancemgmtsys.netlify.app/)
+- [API Documentation](https://bams-lpjt.onrender.com/health)
+- [GitHub Repository](https://github.com/Hasnain-rdj/BAMS)
+- [Issue Tracker](https://github.com/Hasnain-rdj/BAMS/issues)
 
 ---
+
+<div align="center">
+
+Made with ❤️ by Hasnain
+
+**[⬆ back to top](#-bams---blockchain-based-attendance-management-system)**
+
+</div>

@@ -3,6 +3,7 @@ const API_URL = window.API_CONFIG ? window.API_CONFIG.BASE_URL : 'http://localho
 
 let allDepartments = [];
 let allStudents = [];
+let currentView = 'tree'; // 'tree' or 'list'
 
 // Toast notification
 function showToast(message, type = 'info') {
@@ -10,6 +11,25 @@ function showToast(message, type = 'info') {
     toast.textContent = message;
     toast.className = `toast ${type} show`;
     setTimeout(() => toast.className = 'toast', 3000);
+}
+
+// Toggle view
+function setView(view) {
+    currentView = view;
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active-view'));
+    event.target.classList.add('active-view');
+    
+    // Reload current blockchain if displayed
+    const containers = ['deptChainContainer', 'classChainContainer', 'studentChainContainer'];
+    containers.forEach(id => {
+        const container = document.getElementById(id);
+        if (container.innerHTML && !container.innerHTML.includes('empty-state')) {
+            // Trigger reload based on which container has content
+            if (id === 'deptChainContainer' && container.children.length > 0) {
+                document.getElementById('loadDeptChain').click();
+            }
+        }
+    });
 }
 
 // Fetch departments
@@ -63,7 +83,11 @@ document.getElementById('loadDeptChain').addEventListener('click', async () => {
         const result = await response.json();
 
         if (result.success) {
-            displayBlockchain(result.data, 'deptChainContainer', 'Department');
+            if (currentView === 'tree') {
+                displayBlockchainTree(result.data, 'deptChainContainer', 'Department');
+            } else {
+                displayBlockchainList(result.data, 'deptChainContainer', 'Department');
+            }
             showToast('Department blockchain loaded', 'success');
         }
     } catch (error) {
@@ -86,7 +110,11 @@ document.getElementById('loadClassChain').addEventListener('click', async () => 
         const result = await response.json();
 
         if (result.success) {
-            displayBlockchain(result.data, 'classChainContainer', 'Class');
+            if (currentView === 'tree') {
+                displayBlockchainTree(result.data, 'classChainContainer', 'Class');
+            } else {
+                displayBlockchainList(result.data, 'classChainContainer', 'Class');
+            }
             showToast('Class blockchain loaded', 'success');
         } else {
             showToast(result.message || 'Error loading blockchain', 'error');
@@ -111,7 +139,11 @@ document.getElementById('loadStudentChain').addEventListener('click', async () =
         const result = await response.json();
 
         if (result.success) {
-            displayBlockchain(result.data, 'studentChainContainer', 'Student');
+            if (currentView === 'tree') {
+                displayBlockchainTree(result.data, 'studentChainContainer', 'Student');
+            } else {
+                displayBlockchainList(result.data, 'studentChainContainer', 'Student');
+            }
             showToast('Student blockchain loaded', 'success');
         }
     } catch (error) {
@@ -120,8 +152,194 @@ document.getElementById('loadStudentChain').addEventListener('click', async () =
     }
 });
 
-// Display blockchain
-function displayBlockchain(blocks, containerId, chainType) {
+// Display blockchain as 3D tree
+function displayBlockchainTree(blocks, containerId, chainType) {
+    const container = document.getElementById(containerId);
+    
+    if (blocks.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No blocks found</p></div>';
+        return;
+    }
+
+    // Create legend
+    const legend = `
+        <div class="tree-legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); border: 2px solid #ff9800;"></div>
+                <span>Genesis Block</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);"></div>
+                <span>Active Block</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);"></div>
+                <span>Deleted Block</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: white; border: 1px solid #ccc;"></div>
+                <span>Regular Block</span>
+            </div>
+        </div>
+    `;
+
+    // Create tree structure
+    const treeHTML = `
+        <div style="margin: 1rem 0; padding: 1rem; background-color: rgba(255,255,255,0.9); border-radius: 8px; text-align: center;">
+            <strong>Total Blocks:</strong> ${blocks.length} | 
+            <strong>Chain Type:</strong> ${chainType} |
+            <strong>View:</strong> Tree Visualization
+        </div>
+        ${legend}
+        <div class="tree-container">
+            <div class="tree-wrapper">
+                ${blocks.map((block, index) => {
+                    const isGenesis = block.transactions.type === 'genesis';
+                    const isDeleted = block.transactions.status === 'deleted';
+                    const isActive = block.transactions.status === 'active';
+                    
+                    let nodeClass = 'tree-node';
+                    if (isGenesis) nodeClass += ' genesis';
+                    else if (isDeleted) nodeClass += ' deleted';
+                    else if (isActive) nodeClass += ' active';
+
+                    return `
+                        <div class="tree-level">
+                            <div class="${nodeClass}" 
+                                 data-block-index="${index}"
+                                 onmouseenter="showNodeTooltip(event, ${index}, \`${JSON.stringify(block).replace(/`/g, '\\`')}\`)"
+                                 onmouseleave="hideNodeTooltip()">
+                                <div class="node-index">Block #${block.index}</div>
+                                <div class="node-type">${block.transactions.name || block.transactions.type || 'Block'}</div>
+                                <div class="node-hash">${block.hash.substring(0, 12)}...</div>
+                                ${index < blocks.length - 1 ? '<div class="node-connector vertical" style="height: 2rem; top: 100%;"></div>' : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = treeHTML;
+}
+
+// Show tooltip on node hover
+function showNodeTooltip(event, blockIndex, blockDataStr) {
+    const tooltip = document.getElementById('nodeTooltip');
+    const block = JSON.parse(blockDataStr);
+    
+    let tooltipContent = `
+        <div class="tooltip-header">Block #${block.index} Details</div>
+        <div class="tooltip-item">
+            <span class="tooltip-label">Type:</span>
+            <span class="tooltip-value">${block.transactions.type || 'N/A'}</span>
+        </div>
+        <div class="tooltip-item">
+            <span class="tooltip-label">Timestamp:</span>
+            <span class="tooltip-value">${new Date(block.timestamp).toLocaleString()}</span>
+        </div>
+        <div class="tooltip-item">
+            <span class="tooltip-label">Action:</span>
+            <span class="tooltip-value">${block.transactions.action || 'N/A'}</span>
+        </div>
+        <div class="tooltip-item">
+            <span class="tooltip-label">Nonce:</span>
+            <span class="tooltip-value">${block.nonce}</span>
+        </div>
+    `;
+
+    // Add specific fields based on transaction data
+    if (block.transactions.name) {
+        tooltipContent += `
+            <div class="tooltip-item">
+                <span class="tooltip-label">Name:</span>
+                <span class="tooltip-value">${block.transactions.name}</span>
+            </div>
+        `;
+    }
+
+    if (block.transactions.departmentId) {
+        tooltipContent += `
+            <div class="tooltip-item">
+                <span class="tooltip-label">Department:</span>
+                <span class="tooltip-value">${block.transactions.departmentId}</span>
+            </div>
+        `;
+    }
+
+    if (block.transactions.rollNumber) {
+        tooltipContent += `
+            <div class="tooltip-item">
+                <span class="tooltip-label">Roll Number:</span>
+                <span class="tooltip-value">${block.transactions.rollNumber}</span>
+            </div>
+        `;
+    }
+
+    if (block.transactions.attendanceStatus) {
+        tooltipContent += `
+            <div class="tooltip-item">
+                <span class="tooltip-label">Attendance:</span>
+                <span class="tooltip-value">${block.transactions.attendanceStatus}</span>
+            </div>
+            <div class="tooltip-item">
+                <span class="tooltip-label">Date:</span>
+                <span class="tooltip-value">${block.transactions.date}</span>
+            </div>
+        `;
+    }
+
+    if (block.transactions.status) {
+        tooltipContent += `
+            <div class="tooltip-item">
+                <span class="tooltip-label">Status:</span>
+                <span class="tooltip-value">${block.transactions.status}</span>
+            </div>
+        `;
+    }
+
+    tooltipContent += `
+        <div class="tooltip-item" style="grid-template-columns: 1fr;">
+            <span class="tooltip-label">Hash (PoW):</span>
+            <span class="tooltip-value" style="font-size: 0.7rem; word-break: break-all;">${block.hash}</span>
+        </div>
+        <div class="tooltip-item" style="grid-template-columns: 1fr;">
+            <span class="tooltip-label">Previous Hash:</span>
+            <span class="tooltip-value" style="font-size: 0.7rem; word-break: break-all;">${block.prev_hash}</span>
+        </div>
+    `;
+
+    tooltip.innerHTML = tooltipContent;
+    
+    // Position tooltip
+    const rect = event.target.getBoundingClientRect();
+    
+    let left = rect.right + 10;
+    let top = rect.top;
+
+    // Adjust if tooltip goes off screen
+    if (left + 400 > window.innerWidth) {
+        left = rect.left - 410;
+    }
+    
+    if (top + 400 > window.innerHeight) {
+        top = window.innerHeight - 410;
+    }
+
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + window.scrollY + 'px';
+    tooltip.classList.add('show');
+}
+
+// Hide tooltip
+function hideNodeTooltip() {
+    const tooltip = document.getElementById('nodeTooltip');
+    tooltip.classList.remove('show');
+}
+
+// Display blockchain as list (original view)
+function displayBlockchainList(blocks, containerId, chainType) {
     const container = document.getElementById(containerId);
     
     if (blocks.length === 0) {
@@ -132,7 +350,8 @@ function displayBlockchain(blocks, containerId, chainType) {
     container.innerHTML = `
         <div style="margin: 1rem 0; padding: 1rem; background-color: var(--light-bg); border-radius: 5px;">
             <strong>Total Blocks:</strong> ${blocks.length} | 
-            <strong>Chain Type:</strong> ${chainType}
+            <strong>Chain Type:</strong> ${chainType} |
+            <strong>View:</strong> List
         </div>
         <div class="block-container">
             ${blocks.map(block => `
@@ -227,8 +446,19 @@ function displayBlockchain(blocks, containerId, chainType) {
     `;
 }
 
+// Mobile navigation toggle
 // Load data on page load
 document.addEventListener('DOMContentLoaded', () => {
     fetchDepartments();
     fetchStudents();
+
+    // Mobile menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
 });
